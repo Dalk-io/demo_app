@@ -1,5 +1,5 @@
 name: dalk
-description: Dalk demo project.
+description: Dalk.io demo project.
 
 version: 1.0.0+1
 
@@ -18,7 +18,7 @@ dependencies:
   flutter_hooks: ^0.9.0
   mobx: ^1.1.1
   flutter_mobx: ^1.1.0
-  dash_chat: ^1.1.1
+  dash_chat: ^1.1.2
   #path: '../dash_chat'
   flare_flutter: ^2.0.3
   dalk_sdk: ^0.0.1
