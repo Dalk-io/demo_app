@@ -1,6 +1,19 @@
 # demo_app
 
-A new Flutter project.
+This is a demo application of [dalk.io](https://dalk.io) SDK use under a Flutter application, it will show you how to build a real time chat application.
+
+To run this demo, you'll need to set up firebase as we're using it to :
+
+- manage our project credentials on firebase remote config to not have secret hard coded in the app
+- manage user session with firebase auth and google sign in
+- manage user database with cloud firestore 
+
+To set up firebase please follow their [documentation](https://pub.dev/packages/firebase_auth).
+
+You'll need to set up Android, iOS and Web platforms. 
+Meaning a `ios/GoogleService-Info.plist`, `android/app/google-services.json` and info on `web/index.html` are mandatory in order to run.  
+
+To know more about Dalk.io SDK, don't hesitate to check our [online documentation](https://dalk.io/doc/api/).
 
 ## Getting Started
 
