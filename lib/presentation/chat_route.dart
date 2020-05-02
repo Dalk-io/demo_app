@@ -1,5 +1,5 @@
 import 'package:dalk/presentation/conversations_route.dart';
-import 'package:dalk/stores/talk_store.dart';
+import 'package:dalk/stores/dalk_store.dart';
 import 'package:dalk_sdk/sdk.dart';
 import 'package:dash_chat/dash_chat.dart';
 import 'package:flutter/foundation.dart';
@@ -20,7 +20,7 @@ class ChatScreen extends StatelessWidget with AvatarBuilder {
 
   @override
   Widget build(BuildContext context) {
-    final talkStore = Provider.of<TalkStore>(context);
+    final talkStore = Provider.of<DalkStore>(context);
     return LayoutBuilder(
       builder: (context, constraints) {
         return Observer(
@@ -49,7 +49,7 @@ class ChatScreen extends StatelessWidget with AvatarBuilder {
                     width: constraints.maxWidth,
                     height: constraints.maxHeight,
                     textInputAction: TextInputAction.send,
-                    onSend: (text) => conv.sendMessage(text.text),
+                    onSend: (text) => conv.sendMessage(message: text.text),
                     avatarBuilder: (chatUser) => getAvatar(User(id: chatUser.uid, name: chatUser.name, avatar: chatUser.avatar)),
                     user: ChatUser(uid: talkStore.me.id, name: talkStore.me.name),
                     messageTimeBuilder: (time, [message]) {
@@ -80,7 +80,6 @@ class ChatScreen extends StatelessWidget with AvatarBuilder {
   ChatUser _getChatUser(User user) {
     return ChatUser(uid: user.id, name: user.name, avatar: user.avatar);
   }
-
 }
 
 class CustomChatMessage extends HookWidget {
@@ -90,38 +89,28 @@ class CustomChatMessage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final talkStore = Provider.of<TalkStore>(context);
+    final talkStore = Provider.of<DalkStore>(context);
     useEffect(() {
       talkStore.setMessageAsSeen(message.id);
       return null;
     }, const []);
 
-    return HookBuilder(
-      builder: (context) {
-        final talkStore = Provider.of<TalkStore>(context);
-        useEffect(() {
-          talkStore.setMessageAsSeen(message.id);
-          return null;
-        }, const []);
-
-        return Padding(
-          padding: const EdgeInsets.only(top: 4.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(message.formattedTime, style: Theme.of(context).textTheme.caption),
-              if (message.user.uid == talkStore.me.id) SleekPadding.extraSmall(),
-              if (message.user.uid == talkStore.me.id)
-                SizedBox(
-                  width: 10,
-                  height: 10,
-                  child: _getStatus(),
-                )
-            ],
-          ),
-        );
-      },
+    return Padding(
+      padding: const EdgeInsets.only(top: 4.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text(message.formattedTime, style: Theme.of(context).textTheme.caption),
+          if (message.user.uid == talkStore.me.id) SleekPadding.extraSmall(),
+          if (message.user.uid == talkStore.me.id)
+            SizedBox(
+              width: 10,
+              height: 10,
+              child: _getStatus(),
+            )
+        ],
+      ),
     );
   }
 

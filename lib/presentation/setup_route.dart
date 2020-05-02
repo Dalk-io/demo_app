@@ -2,7 +2,7 @@ import 'package:dalk/presentation/conversations_route.dart';
 import 'package:dalk/presentation/dialogs.dart';
 import 'package:dalk/presentation/google_button.dart';
 import 'package:dalk/stores/login_store.dart';
-import 'package:dalk/stores/talk_store.dart';
+import 'package:dalk/stores/dalk_store.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -15,7 +15,7 @@ class SetupScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final talkStore = Provider.of<TalkStore>(context, listen: false);
+    final talkStore = Provider.of<DalkStore>(context, listen: false);
     final loginStore = Provider.of<LoginStore>(context);
 
     useEffect(() {
@@ -114,7 +114,7 @@ class _Form extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final loginStore = Provider.of<LoginStore>(context);
-    final talkStore = Provider.of<TalkStore>(context, listen: false);
+    final talkStore = Provider.of<DalkStore>(context, listen: false);
 
     return Column(
       mainAxisSize: MainAxisSize.min,

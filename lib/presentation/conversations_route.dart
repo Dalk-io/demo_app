@@ -5,7 +5,7 @@ import 'package:dalk/presentation/dialogs.dart';
 import 'package:dalk/presentation/setup_route.dart';
 import 'package:dalk/presentation/user_search.dart';
 import 'package:dalk/stores/login_store.dart';
-import 'package:dalk/stores/talk_store.dart';
+import 'package:dalk/stores/dalk_store.dart';
 import 'package:dalk_sdk/sdk.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +21,7 @@ class ConversationsScreen extends HookWidget with AvatarBuilder {
 
   @override
   Widget build(BuildContext context) {
-    final talkStore = Provider.of<TalkStore>(context);
+    final talkStore = Provider.of<DalkStore>(context);
     final floatButtonLocation = useMemoized(() => _StartFloatFloatingActionButtonLocation());
 
     final refreshData = () => talkStore.loadConversations().catchError((ex, stack) {
@@ -134,7 +134,7 @@ class _ConversationList extends HookWidget with AvatarBuilder {
 
   @override
   Widget build(BuildContext context) {
-    final talkStore = Provider.of<TalkStore>(context);
+    final talkStore = Provider.of<DalkStore>(context);
 
     return Observer(
       builder: (context) {
@@ -161,43 +161,45 @@ class _ConversationList extends HookWidget with AvatarBuilder {
               for (var user in conv.partners) {
                 others.add(user.name);
               }
-              return ListTile(
-                selected: !DeviceProxy.isMobile(context) && talkStore.currentConversation?.id == conv.id,
-                onTap: () {
-                  onTap(conv);
-                },
-                onLongPress: conv.isGroup
-                    ? () async {
-                        HapticFeedback.selectionClick();
-                        final subject = await showPromptDialog(
-                          context,
-                          'Subject of the conversation',
-                          label: 'Subject',
-                          currentValue: conv.subject,
-                        );
-                        if (subject != null) {
-                          showWaitingDialog(context, () => talkStore.setConversationOptions(conv, subject), onSuccess: onRefresh);
-                        }
-                      }
-                    : null,
-                leading: _getLeading(conv),
-                title: Text(conv.subject ?? others.join(', ')),
-                subtitle: conv.messages.isEmpty
-                    ? null
-                    : StreamBuilder(
-                        stream: conv.onMessagesEvent,
-                        builder: (context, snapshot) {
-                          final message = conv.messages.last;
-                          return Text(
-                            message.text,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontWeight:
-                                    (message.senderId != talkStore.me.id && message.status != MessageStatus.seen) ? FontWeight.bold : FontWeight.normal),
+              return Observer(
+                builder: (context) => ListTile(
+                  selected: !DeviceProxy.isMobile(context) && talkStore.currentConversation?.id == conv.id,
+                  onTap: () {
+                    onTap(conv);
+                  },
+                  onLongPress: conv.isGroup
+                      ? () async {
+                          HapticFeedback.selectionClick();
+                          final subject = await showPromptDialog(
+                            context,
+                            'Subject of the conversation',
+                            label: 'Subject',
+                            currentValue: conv.subject,
                           );
-                        },
-                      ),
+                          if (subject != null) {
+                            showWaitingDialog(context, () => talkStore.setConversationOptions(conv, subject), onSuccess: onRefresh);
+                          }
+                        }
+                      : null,
+                  leading: _getLeading(conv),
+                  title: Text(conv.subject ?? others.join(', ')),
+                  subtitle: conv.messages.isEmpty
+                      ? null
+                      : StreamBuilder(
+                          stream: conv.onMessagesEvent,
+                          builder: (context, snapshot) {
+                            final message = conv.messages.last;
+                            return Text(
+                              message.text,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontWeight:
+                                      (message.senderId != talkStore.me.id && message.status != MessageStatus.seen) ? FontWeight.bold : FontWeight.normal),
+                            );
+                          },
+                        ),
+                ),
               );
             },
           ),

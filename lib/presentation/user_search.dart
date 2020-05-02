@@ -1,6 +1,6 @@
 import 'package:dalk/presentation/conversations_route.dart';
 import 'package:dalk/presentation/dialogs.dart';
-import 'package:dalk/stores/talk_store.dart';
+import 'package:dalk/stores/dalk_store.dart';
 import 'package:dalk_sdk/sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,7 +8,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:sleek_spacing/sleek_spacing.dart';
 
 class UserSearchDelegate extends SearchDelegate<User> {
-  final TalkStore talkStore;
+  final DalkStore talkStore;
 
   UserSearchDelegate(this.talkStore);
 
@@ -45,7 +45,7 @@ class UserSearchDelegate extends SearchDelegate<User> {
 }
 
 class _UserSearchResult extends StatelessWidget with AvatarBuilder {
-  final TalkStore talkStore;
+  final DalkStore talkStore;
   final String query;
 
   _UserSearchResult(this.query, this.talkStore);
