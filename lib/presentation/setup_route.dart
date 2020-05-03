@@ -136,6 +136,12 @@ class _Form extends StatelessWidget {
               );
             }, onSuccess: () {
               Navigator.of(context)?.pushReplacementNamed(ConversationsScreen.route);
+            }, onFailure: (err, stack) {
+              if (err.toString().contains('[object Object')) {
+                showErrorDialog(context, 'Popup are blocked, please allow them to sign-in');
+              } else {
+                showErrorDialog(context, err.toString());
+              }
             });
           },
         ),

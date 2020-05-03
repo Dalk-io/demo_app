@@ -21,7 +21,7 @@ dependencies:
   dash_chat: ^1.1.2
   #path: '../dash_chat'
   flare_flutter: ^2.0.3
-  dalk_sdk: 0.0.5
+  dalk_sdk: 0.0.6
   flutter:
     sdk: flutter
 
