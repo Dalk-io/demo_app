@@ -138,7 +138,7 @@ class _Form extends StatelessWidget {
               Navigator.of(context)?.pushReplacementNamed(ConversationsScreen.route);
             }, onFailure: (err, stack) {
               if (err.toString().contains('[object Object')) {
-                showErrorDialog(context, 'Popup are blocked, please allow them to sign-in');
+                showErrorDialog(context, 'Popup are blocked by the browser, please allow them to sign-in');
               } else {
                 showErrorDialog(context, err.toString());
               }
